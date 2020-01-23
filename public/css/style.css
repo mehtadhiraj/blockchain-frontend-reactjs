@@ -1,0 +1,28 @@
+.login{
+    display: block;
+    position: relative;
+    top: 150px;
+}
+.div-wrap{
+    align-self: center;
+    border: #00acc1 1px solid;
+    border-radius: 7px;
+    padding: 50px 50px;
+    box-shadow: 8px 8px 8px #e2e2e2;
+}
+
+.btn-custom{
+    background-color: #00acc1;
+    color: #fff;
+    font-weight: 600;
+}
+
+.bg-custom{
+    background-color: #00acc1;
+}
+
+.navbar-light .navbar-nav .nav-link, .navbar-light .navbar-brand, .navbar-light .navbar-toggler{
+    color: #fff;
+}
+
+
