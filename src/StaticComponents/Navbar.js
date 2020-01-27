@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
-function Navbar(){
+function Navbar(props){
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-custom">
             <a className="navbar-brand" href="/">Pay Secure</a>
@@ -10,14 +11,25 @@ function Navbar(){
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link" href="/">Login</a>
+                        <Link to="/about" className="nav-link">About</Link>
+                        {/* <a className="nav-link" href="/">About</a> */}
                     </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="/">Register</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="/">About</a>
-                    </li>
+                    {props.isAuthenticated ?  
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/login" onClick = {props.logOut}>Logout</Link>
+                            {/* <a className="nav-link" href="/">Login</a> */}
+                        </li> : 
+                        <>
+                            <li className="nav-item">
+                                <Link to="/login" className="nav-link">Login</Link>
+                                {/* <a className="nav-link" href="/">Login</a> */}
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/register" className="nav-link">Register</Link>
+                                {/* <a className="nav-link" href="/">Register</a> */}
+                            </li>
+                        </>
+                    }
                 </ul>
             </div>
         </nav>

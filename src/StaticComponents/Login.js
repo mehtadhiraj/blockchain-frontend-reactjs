@@ -1,13 +1,13 @@
 import React from 'react';
-import Navbar from './Navbar';
 import axios from 'axios';
+import { setHeader, setToken } from '../services/auth';
 
 class Login extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             username: "",
-            key: ""
+            password: ""
         }
     }
 
@@ -21,49 +21,54 @@ class Login extends React.Component{
         event.preventDefault();
         let params = {
             username: this.state.username,
-            key: this.state.key,
+            password: this.state.password,
         }
-        console.log(params);
-        axios.post('http://localhost:3000/login', params)
+        this.setState({
+            username: "",
+            password: ""
+        })
+        // console.log(params);
+        // console.log(process.env.DEV_HOST)
+        axios.post('http://localhost:3001/login', params)
             .then((response)=>{
-                console.log(response);
+                // console.log(response);
+                setHeader(response.data.token);
+                setToken(response.data.token);
+                let user = response.data.user;
+                this.props.logIn(user);
+                this.props.history.push("/"); 
             })
             .catch((error)=> {
                 console.log(error);
             })
-        this.setState({
-            username: "",
-            key: ""
-        })
     }
 
     render(){
         return(
             <div>
-                <Navbar />
                 <div className="container login">
                     <div className="col-md-6 col-sm-12 offset-md-3 div-wrap">
                         <h1 align="center">
                             Wallet Login
                         </h1><br/>
-                        <form method="POST">
+                        <form method="POST" onSubmit = {this.handleSubmit}>
                             <div className="form-group">
-                                <label for="exampleInputEmail1">Username</label>
+                                <label htmlFor="exampleInputEmail1">Username</label>
                                 <input type="text" className="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp"
                                     onChange = {this.fieldChange}
                                     value= {this.state.username}
-                                    required="true"
+                                    required={true}
                                 />
                             </div>
                             <div className="form-group">
-                                <label for="exampleInputPassword1">Enter wallet key</label>
-                                <input type="password" className="form-control" name="key" id="exampleInputPassword1" 
+                                <label htmlFor="exampleInputPassword1">Enter wallet key</label>
+                                <input type="password" className="form-control" name="password" id="exampleInputPassword1" 
                                     onChange = {this.fieldChange}
-                                    value= {this.state.key}
-                                    required="true"
+                                    value= {this.state.password}
+                                    required={true}
                                 />
                             </div>
-                            <button type="submit" className="btn btn-custom container" onClick = {this.handleSubmit}>Submit</button>
+                            <button type="submit" className="btn btn-custom container">Submit</button>
                         </form>
                     </div>
                 </div>

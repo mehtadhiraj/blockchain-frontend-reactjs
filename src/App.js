@@ -1,47 +1,73 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios';
+import Login from './StaticComponents/Login';
+import Navbar from './StaticComponents/Navbar';
+import Register from './StaticComponents/Register';
+import { Router, Route, Switch } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+import history from "./services/history";
+import Home from "./UserComponents/Home";
+
+const token = localStorage.getItem("jwtToken");
 
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {message: "Here comes the message."};
+    if(token){
+      let user = jwtDecode(token);
+      this.state = {
+        isAuthenticated: true,
+        user: user
+      }
+    }else{
+      this.state = {
+        isAuthenticated: false,
+        user: {
+          _id: "",
+          name: "",
+          username: ""
+        }
+      }
+    }
   }
-  componentWillMount(){
-    // let headres['Accept'] = "application/json"; 
-    axios.get('http://localhost:3001/')
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          message : response.data.message
-        })
-      })
-      .catch(function (error) {
-        // handle error
-        console.log("THis is error",error);
-      });
-    
+
+  // If user is logged in set all the user details
+  
+
+  logOut = ()=> {
+    localStorage.clear();
+    this.setState({
+      isAuthenticated: false,
+      user: {
+        _id: "",
+        name: "",
+        username: ""
+      }
+    })
+  }
+
+  logIn = (user)=>{
+    this.setState({
+      isAuthenticated: true,
+      user: user
+    })
   }
 
   render(){
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          {this.state.message}
-          </a>
-        </header>
-      </div>
+      <Router history={history}> 
+        <Navbar logOut = {this.logOut} isAuthenticated = {this.state.isAuthenticated}/>
+        <Switch>
+          <Route exact path="/">
+            <Home logInState = {this.state} history = {history} />
+          </Route>
+          <Route exact path="/login">
+            <Login logIn = {this.logIn} history={history} />
+          </Route>
+          <Route exact path="/register">
+            <Register logIn = {this.logIn} history={history} />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
