@@ -34,7 +34,7 @@ class Register extends React.Component{
                 this.props.history.push("/");
             })
             .catch((error)=>{
-                console.log(error);
+                // console.log(error);
             })
     }
 
@@ -63,14 +63,6 @@ class Register extends React.Component{
                                     required={true}
                                 />
                             </div>
-                            {/* <div className="form-group">
-                                <label htmlFor="exampleInputEmail3">Username</label>
-                                <input type="text" className="form-control" name="username" id="exampleInputEmail3" aria-describedby="emailHelp"
-                                    onChange = {this.handleChange}
-                                    value= {this.state.username}
-                                    required={true}
-                                />
-                            </div> */}
                             <div className="form-group">
                                 <label htmlFor="exampleInputPassword4">Password</label>
                                 <input type="password" className="form-control" name="password" id="exampleInputPassword4" 

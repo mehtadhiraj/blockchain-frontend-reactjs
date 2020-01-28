@@ -15,10 +15,17 @@ function Navbar(props){
                         {/* <a className="nav-link" href="/">About</a> */}
                     </li>
                     {props.isAuthenticated ?  
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login" onClick = {props.logOut}>Logout</Link>
-                            {/* <a className="nav-link" href="/">Login</a> */}
-                        </li> : 
+                        <>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/addaccount">Bank Details</Link>
+                                {/* <a className="nav-link" href="/">Login</a> */}
+                            </li> 
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/login" onClick = {props.logOut}>Logout</Link>
+                                {/* <a className="nav-link" href="/">Login</a> */}
+                            </li> 
+                        </>    
+                            : 
                         <>
                             <li className="nav-item">
                                 <Link to="/login" className="nav-link">Login</Link>

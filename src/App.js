@@ -6,6 +6,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import history from "./services/history";
 import Home from "./UserComponents/Home";
+import AddAccount from './UserComponents/AddAccount';
 
 const token = localStorage.getItem("jwtToken");
 
@@ -65,6 +66,9 @@ class App extends React.Component {
           </Route>
           <Route exact path="/register">
             <Register logIn = {this.logIn} history={history} />
+          </Route>
+          <Route exact path="/addaccount">
+            <AddAccount logInState = {this.state} history={history} logOut = {this.logOut} />
           </Route>
         </Switch>
       </Router>

@@ -8,6 +8,8 @@ class Login extends React.Component{
         this.state = {
             username: "",
             password: ""
+            // error: null,
+            // alertType: "info"
         }
     }
 
@@ -26,6 +28,8 @@ class Login extends React.Component{
         this.setState({
             username: "",
             password: ""
+            // error: "Logging in. Please wait ... ",
+            // alertType: "info"
         })
         // console.log(params);
         // console.log(process.env.DEV_HOST)
@@ -39,7 +43,11 @@ class Login extends React.Component{
                 this.props.history.push("/"); 
             })
             .catch((error)=> {
-                console.log(error);
+                // console.log(error);
+                this.setState({
+                    error: error.message,
+                    alertType: 'danger'
+                })
             })
     }
 
@@ -47,6 +55,12 @@ class Login extends React.Component{
         return(
             <div>
                 <div className="container login">
+                    {
+                        this.state.error &&
+                            <div className={"alert alert-"+this.state.alertType+" col-md-6 offset-md-3"} role={this.state.alertType} >
+                                { this.state.error }
+                            </div> 
+                    }
                     <div className="col-md-6 col-sm-12 offset-md-3 div-wrap">
                         <h1 align="center">
                             Wallet Login
