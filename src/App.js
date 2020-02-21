@@ -7,6 +7,7 @@ import jwtDecode from "jwt-decode";
 import history from "./services/history";
 import Home from "./UserComponents/Home";
 import AddAccount from './UserComponents/AddAccount';
+import Transaction from './UserComponents/Transaction'; 
 
 const token = localStorage.getItem("jwtToken");
 
@@ -14,7 +15,7 @@ class App extends React.Component {
   constructor(props){
     super(props);
     if(token){
-      let user = jwtDecode(token);
+      let user = jwtDecode(token);      
       this.state = {
         isAuthenticated: true,
         user: user
@@ -69,6 +70,9 @@ class App extends React.Component {
           </Route>
           <Route exact path="/addaccount">
             <AddAccount logInState = {this.state} history={history} logOut = {this.logOut} />
+          </Route>
+          <Route exact path="/transaction">
+            <Transaction logInState = {this.state} history={history} logOut = {this.logOut} />
           </Route>
         </Switch>
       </Router>

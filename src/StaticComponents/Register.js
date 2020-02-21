@@ -20,11 +20,7 @@ class Register extends React.Component{
     
     handleSubmit = (event)=>{
         // console.log(this.state);
-        this.setState({
-            name: "",
-            username: "",
-            password: ""
-        });
+        event.preventDefault();
         axios.post('http://localhost:3001/register', this.state)
             .then((response)=>{
                 // console.log(response);
@@ -34,8 +30,13 @@ class Register extends React.Component{
                 this.props.history.push("/");
             })
             .catch((error)=>{
-                // console.log(error);
+                console.log(error.toString());
             })
+        this.setState({
+            name: "",
+            username: "",
+            password: ""
+        });
     }
 
     render(){

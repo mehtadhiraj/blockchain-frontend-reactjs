@@ -2,71 +2,46 @@ import React from 'react';
 import axios from 'axios';
 import { setHeader } from "../services/auth";
 
-class AddAccount extends React.Component{
+class Transaction extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            accountNo: "",
-            ifsc: "",
-            branch: "",
-            bankName: "",
-            error: "",
-            alertType: "info",
-            accounts: []
-        }
-    }
-
-    getAccount = ()=>{
-        setHeader(localStorage.getItem('jwtToken'));
-        axios.post("http://localhost:3001/user/getaccount", {userId: this.props.logInState.user._id})
-            .then(response => {
-                // console.log(response);
-                this.setState({
-                    accounts: response.data.accounts
-                })
-            })
-            .catch(error => {
-                // console.log(error);
-            })
-    }
-
-    componentDidMount(){
-        this.getAccount();
-    }
-
-    fieldChange = (event)=>{
-        this.setState({
-            [event.target.name] : event.target.value
-        })
-    }
-
-    handleSubmit = (event)=>{
-        event.preventDefault();
-        let bankDetails = {
-            accountNo: this.state.accountNo,
-            ifsc: this.state.ifsc,
-            branch: this.state.branch,
-            bankName: this.state.bankName,
-            userId: this.props.logInState.user._id
-        }
-        this.setState({
-            accountNo: "",
-            ifsc: "",
-            branch: "",
-            bankName: "",
+            receiver: "",
+            amount: "",
             error: "",
             alertType: "info"
+        }
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        let transactionDetails = {
+            userId: this.props.logInState.user._id,
+            sender: this.props.logInState.user.username,
+            receiver: this.state.receiver,
+            amount: this.state.amount,
+            status: "pending"
+        }
+        // console.log(transactionDetails);
+        this.setState({
+            receiver: "",
+            amount: ""
         })
-        // console.log(bankDetails);
         setHeader(localStorage.getItem('jwtToken'));
-        axios.post('http://localhost:3001/user/addaccount', bankDetails)
+        axios.post("http://localhost:3001/user/transaction", transactionDetails)
             .then(response => {
                 // console.log(response);
-                this.setState({
-                    error: response.data.message,
-                    alertType: "info"
-                })
-                this.getAccount();
+                if(response.data.status === 204){
+                    this.setState({
+                        error: response.data.message,
+                        alertType: "danger"
+                    })
+                }else{
+                    this.setState({
+                        error: response.data.message,
+                        alertType: "success"
+                    })
+                }
             })
             .catch(async error => {
                 // console.log(error.toJSON());
@@ -80,20 +55,20 @@ class AddAccount extends React.Component{
             })
     }
 
+    fieldChange = (event)=>{
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
     render(){
         return(
             <div className="mt-5 p-3">
                 {
-                    this.state.error &&
-                        <div className={"alert alert-"+this.state.alertType+" col-md-6 offset-md-3"} role={this.state.alertType} >
-                            { this.state.error }
-                        </div> 
-                }
-                {
                     this.props.logInState.isAuthenticated ?
                         <div className="container">
-                            <h3 className="">Your linked bank accounts.</h3>
-                            {
+                            <h3 className="">Your Transaction History.</h3>
+                            {/* {
                                 this.state.accounts.length > 0 ? 
                                     this.state.accounts.map(account => {
                                         return (
@@ -113,39 +88,45 @@ class AddAccount extends React.Component{
                                         <samp>We couldn't find any linked bank account. </samp>
                                         <a href="#" data-toggle="modal" data-target="#exampleModal">Add new account.</a>
                                     </div>
-                            }
+                            } */}
                             <button type="button" className="btn btn-custom float-right" data-toggle="modal" data-target="#exampleModal">
-                                Link New Account
+                                Transfer Money
                             </button>
                             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div className="modal-content">
                                         <div className="modal-header">
-                                            <h5 className="modal-title" id="exampleModalLabel">Add Bank Details</h5>
+                                            <h5 className="modal-title" id="exampleModalLabel">Add Benificiary Details</h5>
                                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div className="modal-body">
                                             <div className="col-md-12 p-5">
+                                                {
+                                                    this.state.error &&
+                                                        <div className={"alert alert-"+this.state.alertType+" col-sm-12 mb-5"} role={this.state.alertType} >
+                                                            { this.state.error }
+                                                        </div> 
+                                                }
                                                 <form onSubmit = {this.handleSubmit} method="POST">
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
-                                                            <label htmlFor="inputEmail4">Account Number</label>
-                                                            <input type="text" className="form-control" name="accountNo" id="inputEmail4" placeholder="Account Number" required={true} 
-                                                                value = {this.state.accountNo}
+                                                            <label htmlFor="inputEmail4">Receiver Username</label>
+                                                            <input type="text" className="form-control" name="receiver" id="inputEmail4" placeholder="Receiver's Username" required={true} 
+                                                                value = {this.state.receiver}
                                                                 onChange = {this.fieldChange}
                                                             />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <label htmlFor="inputPassword4">IFSC Code</label>
-                                                            <input type="text" className="form-control" name="ifsc" id="inputPassword4" placeholder="IFSC code" required={true} 
-                                                                value = {this.state.ifsc}
+                                                            <label htmlFor="inputPassword4">Amount</label>
+                                                            <input type="number" className="form-control" name="amount" id="inputPassword4" placeholder="Amount in ₹" required={true} 
+                                                                value = {this.state.amount}
                                                                 onChange = {this.fieldChange}
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="form-group">
+                                                    {/* <div className="form-group">
                                                         <label htmlFor="inputAddress">Branch Name</label>
                                                         <input type="text" className="form-control" name="branch" id="inputAddress" placeholder="Branch" required={true} 
                                                             value = {this.state.branch}
@@ -158,8 +139,8 @@ class AddAccount extends React.Component{
                                                             value = {this.state.bankName}
                                                             onChange = {this.fieldChange}
                                                         />
-                                                    </div>
-                                                    <button type="submit" className="btn btn-custom container">Add Bank Details</button>
+                                                    </div> */}
+                                                    <button type="submit" className="btn btn-custom container">Transfer Money</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -175,4 +156,4 @@ class AddAccount extends React.Component{
     }
 }
 
-export default AddAccount;
+export default Transaction;
