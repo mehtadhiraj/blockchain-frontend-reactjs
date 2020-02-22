@@ -9,8 +9,31 @@ class Transaction extends React.Component{
             receiver: "",
             amount: "",
             error: "",
-            alertType: "info"
+            alertType: "info",
+            transactions: []
         }
+    }
+
+    getTransactions = ()=>{
+        setHeader(localStorage.getItem('jwtToken'));
+        axios.post("http://localhost:3001/user/gettransaction", {userId: this.props.logInState.user._id})
+            .then(response => {
+                // console.log(response);
+                this.setState({
+                    transactions: response.data.transactionChain
+                })
+            })
+            .catch(error => {
+                // console.log(error);
+                this.setState({
+                    error: error.message,
+                    alertType: "danger"
+                })
+            })
+    }
+
+    componentDidMount(){
+        this.getTransactions();
     }
 
     handleSubmit = (event) => {
@@ -25,7 +48,9 @@ class Transaction extends React.Component{
         // console.log(transactionDetails);
         this.setState({
             receiver: "",
-            amount: ""
+            amount: "",
+            error: "",
+            alertType: ""
         })
         setHeader(localStorage.getItem('jwtToken'));
         axios.post("http://localhost:3001/user/transaction", transactionDetails)
@@ -65,31 +90,40 @@ class Transaction extends React.Component{
         return(
             <div className="mt-5 p-3">
                 {
+                    this.state.error &&
+                        <div className={"alert alert-"+this.state.alertType+" col-sm-8 offset-md-2"} role={this.state.alertType} >
+                            { this.state.error }
+                        </div> 
+                }
+                {
                     this.props.logInState.isAuthenticated ?
                         <div className="container">
-                            <h3 className="">Your Transaction History.</h3>
-                            {/* {
-                                this.state.accounts.length > 0 ? 
-                                    this.state.accounts.map(account => {
+                            <h3 className="mb-5">Your Transaction History.</h3>
+                            {
+                                this.state.transactions.length > 0 ? 
+                                    this.state.transactions.map(transaction => {
                                         return (
-                                            <div className="card mb-3 mt-3" key={account.accountNo}>
-                                                <h5 className="card-header"><b>Acc. no.</b> : {account.accountNo}  <span className="badge badge-primary btn-custom">{account.branch+" Branch"}</span></h5>
-                                                <div className="card-body">
-                                                    <h5 className="card-title"><b>Bank</b> : {account.bankName}</h5>
-                                                    <p className="card-text lead">
-                                                        IFSC : {account.ifsc}
-                                                    </p>
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                   <h5> <b> Transaction ID : </b> { transaction._id } &nbsp; <span className="badge badge-primary btn-custom">{transaction.status}</span></h5>
+                                                </div>
+                                                <div class="card-body">
+                                                   <b>Sender : </b> {transaction.sender.username} <br/>
+                                                   <b>Receiver : </b> {transaction.receiver.username} <br/>
+                                                   <b>Amount : </b> {transaction.amount} <br/>
+                                                   <b>Action : </b> {transaction.action} <br/>
+                                                   <b>Hash :</b> {transaction.hash}
                                                 </div>
                                             </div>
                                         )
                                     })
                                     :
                                     <div>
-                                        <samp>We couldn't find any linked bank account. </samp>
-                                        <a href="#" data-toggle="modal" data-target="#exampleModal">Add new account.</a>
+                                        <samp>You have not done any transactions yet. </samp>
+                                        <a href="#" data-toggle="modal" data-target="#exampleModal">Do your first transaction.</a>
                                     </div>
-                            } */}
-                            <button type="button" className="btn btn-custom float-right" data-toggle="modal" data-target="#exampleModal">
+                            }
+                            <button type="button" className="btn btn-custom float-right mb-3" data-toggle="modal" data-target="#exampleModal">
                                 Transfer Money
                             </button>
                             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,12 +137,6 @@ class Transaction extends React.Component{
                                         </div>
                                         <div className="modal-body">
                                             <div className="col-md-12 p-5">
-                                                {
-                                                    this.state.error &&
-                                                        <div className={"alert alert-"+this.state.alertType+" col-sm-12 mb-5"} role={this.state.alertType} >
-                                                            { this.state.error }
-                                                        </div> 
-                                                }
                                                 <form onSubmit = {this.handleSubmit} method="POST">
                                                     <div className="form-row">
                                                         <div className="form-group col-md-6">
