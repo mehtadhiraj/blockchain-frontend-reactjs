@@ -62,6 +62,7 @@ class Transaction extends React.Component{
                         alertType: "danger"
                     })
                 }else{
+                    this.getTransactions();
                     this.setState({
                         error: response.data.message,
                         alertType: "success"

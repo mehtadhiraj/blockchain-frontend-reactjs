@@ -25,4 +25,15 @@
     color: #fff;
 }
 
+.key{
+    color: #00acc1;
+    font-weight: 600;
+    font-size: xx-large;
+    text-align: justify;
+    cursor: pointer;
+}
+
+.note{
+    color: #ff0000;
+}
 

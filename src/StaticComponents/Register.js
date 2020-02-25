@@ -24,10 +24,17 @@ class Register extends React.Component{
         axios.post('http://localhost:3001/register', this.state)
             .then((response)=>{
                 // console.log(response);
-                setHeader(response.data.token);
-                setToken(response.data.token); 
-                this.props.logIn(response.data.user);
-                this.props.history.push("/");
+                if(response.data.status === 204){
+                    console.log(response.data.error);
+                }else{
+                    setHeader(response.data.token);
+                    setToken(response.data.token); 
+                    this.props.logIn(response.data.user);
+                    this.props.history.push({
+                        pathname: '/key',
+                        state: { key: response.data.privateKey }
+                    });
+                }
             })
             .catch((error)=>{
                 console.log(error.toString());

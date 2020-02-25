@@ -8,6 +8,7 @@ import history from "./services/history";
 import Home from "./UserComponents/Home";
 import AddAccount from './UserComponents/AddAccount';
 import Transaction from './UserComponents/Transaction'; 
+import Key from './UserComponents/Key';
 
 const token = localStorage.getItem("jwtToken");
 
@@ -73,6 +74,9 @@ class App extends React.Component {
           </Route>
           <Route exact path="/transaction">
             <Transaction logInState = {this.state} history={history} logOut = {this.logOut} />
+          </Route>
+          <Route exact path="/key">
+            <Key logInState = {this.state} history={history} logOut = {this.logOut} />
           </Route>
         </Switch>
       </Router>
