@@ -104,11 +104,11 @@ class Transaction extends React.Component{
                                 this.state.transactions.length > 0 ? 
                                     this.state.transactions.map(transaction => {
                                         return (
-                                            <div class="card mb-3">
-                                                <div class="card-header">
+                                            <div className="card mb-3" key={ transaction._id }>
+                                                <div className="card-header">
                                                    <h5> <b> Transaction ID : </b> { transaction._id } &nbsp; <span className="badge badge-primary btn-custom">{transaction.status}</span></h5>
                                                 </div>
-                                                <div class="card-body">
+                                                <div className="card-body">
                                                    <b>Sender : </b> {transaction.sender.username} <br/>
                                                    <b>Receiver : </b> {transaction.receiver.username} <br/>
                                                    <b>Amount : </b> {transaction.amount} <br/>
@@ -121,7 +121,7 @@ class Transaction extends React.Component{
                                     :
                                     <div>
                                         <samp>You have not done any transactions yet. </samp>
-                                        <a href="#" data-toggle="modal" data-target="#exampleModal">Do your first transaction.</a>
+                                        <a href="#exampleModal" data-toggle="modal" data-target="#exampleModal">Do your first transaction.</a>
                                     </div>
                             }
                             <button type="button" className="btn btn-custom float-right mb-3" data-toggle="modal" data-target="#exampleModal">

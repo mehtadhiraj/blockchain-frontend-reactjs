@@ -111,7 +111,7 @@ class AddAccount extends React.Component{
                                     :
                                     <div>
                                         <samp>We couldn't find any linked bank account. </samp>
-                                        <a href="#" data-toggle="modal" data-target="#exampleModal">Add new account.</a>
+                                        <a href="#exampleModal" data-toggle="modal" data-target="#exampleModal">Add new account.</a>
                                     </div>
                             }
                             <button type="button" className="btn btn-custom float-right" data-toggle="modal" data-target="#exampleModal">

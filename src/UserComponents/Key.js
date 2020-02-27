@@ -8,12 +8,11 @@ class Transaction extends React.Component{
         }
     }
 
-    copyText = (event) => {
+    copyText = () => {
         let range = document.createRange();
         range.selectNode(document.getElementById("copy-key"));
         window.getSelection().addRange(range);
         document.execCommand("copy");
-        // alert("text copied, copy in the text-area");
     }
 
     handleSubmit = (event) => {
