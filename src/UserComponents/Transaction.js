@@ -20,7 +20,7 @@ class Transaction extends React.Component{
             .then(response => {
                 // console.log(response);
                 this.setState({
-                    transactions: response.data.transactionChain
+                    transactions: response.data.transactionChain.reverse()
                 })
             })
             .catch(error => {
@@ -54,7 +54,7 @@ class Transaction extends React.Component{
         })
         setHeader(localStorage.getItem('jwtToken'));
         axios.post("http://localhost:3001/user/transaction", transactionDetails)
-            .then(response => {
+            .then(async response => {
                 // console.log(response);
                 if(response.data.status === 204){
                     this.setState({
@@ -67,6 +67,9 @@ class Transaction extends React.Component{
                         error: response.data.message,
                         alertType: "success"
                     })
+                    await setTimeout(()=>{
+                        this.getTransactions();
+                    }, 120000);
                 }
             })
             .catch(async error => {
