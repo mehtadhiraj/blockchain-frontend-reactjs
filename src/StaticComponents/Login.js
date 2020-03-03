@@ -36,11 +36,19 @@ class Login extends React.Component{
         axios.post('http://localhost:3001/login', params)
             .then((response)=>{
                 // console.log(response);
-                setHeader(response.data.token);
-                setToken(response.data.token);
-                let user = response.data.user;
-                this.props.logIn(user);
-                this.props.history.push("/"); 
+                if(response.data.status === 204){
+                    this.setState({
+                        error: response.data.message,
+                        alertType: 'danger'
+                    })    
+                }else{
+                    setHeader(response.data.token);
+                    setToken(response.data.token);
+                    let user = response.data.user;
+                    this.props.logIn(user);
+                    this.props.history.push("/");
+                }
+                 
             })
             .catch((error)=> {
                 // console.log(error);

@@ -6,16 +6,16 @@ import { Router, Route, Switch } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import history from "./services/history";
 import Home from "./UserComponents/Home";
-import AddAccount from './UserComponents/AddAccount';
-import Transaction from './UserComponents/Transaction'; 
+import Account from './UserComponents/AccountComponents/Account';
+import Transaction from './UserComponents/TransactionComponents/Transaction'; 
 import Key from './UserComponents/Key';
 
-const token = localStorage.getItem("jwtToken");
+const token = localStorage.getItem("jwtToken") ? localStorage.getItem("jwtToken") : null;
 
 class App extends React.Component {
   constructor(props){
     super(props);
-    if(token){
+    if(token && token !== "undefined"){
       let user = jwtDecode(token);      
       this.state = {
         isAuthenticated: true,
@@ -70,7 +70,7 @@ class App extends React.Component {
             <Register logIn = {this.logIn} history={history} />
           </Route>
           <Route exact path="/addaccount">
-            <AddAccount logInState = {this.state} history={history} logOut = {this.logOut} />
+            <Account logInState = {this.state} history={history} logOut = {this.logOut} />
           </Route>
           <Route exact path="/transaction">
             <Transaction logInState = {this.state} history={history} logOut = {this.logOut} />
