@@ -3,7 +3,7 @@ import React from 'react';
 function TransferMoney(props){
     return(
         <div>
-            <button type="button" className="btn btn-custom float-right mb-3" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" className="btn btn-custom float-right mb-3" data-toggle="modal" data-target="#exampleModal" disabled={props.state.button}>
                 Transfer Money
             </button>
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

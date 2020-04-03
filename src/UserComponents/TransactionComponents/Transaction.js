@@ -12,7 +12,8 @@ class Transaction extends React.Component{
             amount: "",
             error: "",
             alertType: "info",
-            transactions: []
+            transactions: [],
+            button: false
         }
     }
 
@@ -52,7 +53,8 @@ class Transaction extends React.Component{
             receiver: "",
             amount: "",
             error: "Reload your page after 1 miunte. We are processing your transaction...",
-            alertType: "info"
+            alertType: "info",
+            button: true
         })
         setHeader(localStorage.getItem('jwtToken'));
         axios.post("http://localhost:3001/user/transaction", transactionDetails)
@@ -61,13 +63,15 @@ class Transaction extends React.Component{
                 if(response.data.status === 204){
                     this.setState({
                         error: response.data.message,
-                        alertType: "danger"
+                        alertType: "danger",
+                        button: false
                     })
                 }else{
                     this.getTransactions();
                     this.setState({
                         error: response.data.message,
-                        alertType: "info"
+                        alertType: "success",
+                        button: false
                     })
                     // await setTimeout(()=>{
                     //     this.getTransactions();
