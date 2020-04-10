@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { setHeader } from "../../services/auth";
+import { setHeader, API_URL } from "../../services/auth";
 import AddAccount from './AddAccount';
 import AccountCards from './AccountCards';
 
@@ -20,7 +20,7 @@ class Account extends React.Component{
 
     getAccount = ()=>{
         setHeader(localStorage.getItem('jwtToken'));
-        axios.post("http://localhost:3001/user/getaccount", {userId: this.props.logInState.user._id})
+        axios.post(API_URL+"user/getaccount", {userId: this.props.logInState.user._id})
             .then(response => {
                 // console.log(response);
                 this.setState({
@@ -61,7 +61,7 @@ class Account extends React.Component{
         })
         // console.log(bankDetails);
         setHeader(localStorage.getItem('jwtToken'));
-        axios.post('http://localhost:3001/user/addaccount', bankDetails)
+        axios.post(API_URL+'user/addaccount', bankDetails)
             .then(response => {
                 // console.log(response);
                 this.setState({

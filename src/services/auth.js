@@ -9,3 +9,5 @@ export const setToken = function(token){
     localStorage.setItem('jwtToken', token);
 }
 
+export const API_URL = "http://192.168.99.102:3001/"
+
