@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { setHeader } from "../../services/auth";
+import { setHeader, API_URL } from "../../services/auth";
 import TransferMoney from './TransferMoney';
 import TransactionCards  from './TransactionCards';
 
@@ -19,7 +19,7 @@ class Transaction extends React.Component{
 
     getTransactions = ()=>{
         setHeader(localStorage.getItem('jwtToken'));
-        axios.post("http://localhost:3001/user/gettransaction", {userId: this.props.logInState.user._id})
+        axios.post(API_URL+"user/gettransaction", {userId: this.props.logInState.user._id})
             .then(response => {
                 // console.log(response); 
                 this.setState({
@@ -57,7 +57,7 @@ class Transaction extends React.Component{
             button: true
         })
         setHeader(localStorage.getItem('jwtToken'));
-        axios.post("http://localhost:3001/user/transaction", transactionDetails)
+        axios.post(API_URL+"user/transaction", transactionDetails)
             .then(async response => {
                 // console.log(response);
                 if(response.data.status === 204){

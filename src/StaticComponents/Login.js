@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { setHeader, setToken } from '../services/auth';
+import { setHeader, setToken, API_URL } from '../services/auth';
 
 class Login extends React.Component{
     constructor(props){
@@ -33,7 +33,7 @@ class Login extends React.Component{
         })
         // console.log(params);
         // console.log(process.env.DEV_HOST)
-        axios.post('http://localhost:3001/login', params)
+        axios.post(API_URL+'login', params)
             .then((response)=>{
                 // console.log(response);
                 if(response.data.status === 204){

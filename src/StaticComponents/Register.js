@@ -21,7 +21,7 @@ class Register extends React.Component{
     handleSubmit = (event)=>{
         // console.log(this.state);
         event.preventDefault();
-        axios.post('http://localhost:3001/register', this.state)
+        axios.post(API_URL+'register', this.state)
             .then((response)=>{
                 // console.log(response);
                 if(response.data.status === 204){
