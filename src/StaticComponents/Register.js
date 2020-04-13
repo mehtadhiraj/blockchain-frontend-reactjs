@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { setHeader, setToken } from '../services/auth';
+import { setHeader, setToken, API_URL } from '../services/auth';
 
 class Register extends React.Component{
     constructor(props){
