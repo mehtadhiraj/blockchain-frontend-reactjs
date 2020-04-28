@@ -39,7 +39,7 @@ class Transaction extends React.Component{
         this.getTransactions();
     }
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
         let transactionDetails = {
             userId: this.props.logInState.user._id,
@@ -57,7 +57,7 @@ class Transaction extends React.Component{
             button: true
         })
         setHeader(localStorage.getItem('jwtToken'));
-        axios.post(API_URL+"user/transaction", transactionDetails)
+        await axios.post(API_URL+"user/transaction", transactionDetails)
             .then(async response => {
                 // console.log(response);
                 if(response.data.status === 204){
@@ -73,13 +73,6 @@ class Transaction extends React.Component{
                         alertType: "success",
                         button: false
                     })
-                    // await setTimeout(()=>{
-                    //     this.getTransactions();
-                    //     this.setState({
-                    //         error: "Transaction Saved.",
-                    //         alertType: "info"
-                    //     })
-                    // }, 40000);
                 }
             })
             .catch(async error => {
